@@ -7,6 +7,8 @@ Anggota Kelompok:
 
 ## Nomor 1 : Membuat topologi jaringan.
 
+<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/topo.PNG" >
+
 Setting interfaces pada setiap UML seperti berikut:
 - SURABAYA (Router)
 
@@ -170,5 +172,99 @@ Simpan file tersebut. Kemudian **service squid restart**. Lalu coba akses situs 
 
 ## Nomor 10 : Setiap mengakses google.com, maka akan di redirect menuju monta.if.its.ac.id.
 
+Buka file ban.acl dengan mengetikkan
+
+    nano /etc/squid/ban.acl
+
+Lalu tambahkan pada file tersebut google.com. hal ini dimaksudkan dengan soal yaitu jika user mengetikkan google.com maka akan me-redirect ke monta.if.its.ac.id.
+
+<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/banacl.PNG">
+
+Buka file squid.conf dengan mengetikkan nano /etc/squid/squid.conf, dan tambahkan script berikut:
+
+    acl awas url_regex "/etc/squid/ban.acl"
+    deny_info http://monta.if.its.ac.id/ awas
+    http_access deny awas
+    
+<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/squidconf.PNG" >
+
+Restart squid service squid restart, lalu masukkan google.com pada search bar, maka akan teralihkan ke monta.if.its.ac.id. (Berlaku jika sesuai dengan jam yang telah ditetapkan).
+
+<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/monta.PNG" >
+
 ## Nomor 11 : Mengubah error page default squid 
+
+Buka folder cd /usr/share/squid/errors/en dan download error page dengan cara wget 10.151.36.202/ERR_ACCESS_DENIED. Lalu tampilannya akan sebagai berikut dengan ls
+
+<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/11.PNG" >
+
+Remove ERR_ACCESSS_DENIED dan download error page dengan cara wget 10.151.36.202/ERR_ACCESS_DENIED
+
+    rm ERR_ACCESSS_DENIED
+
+Buka kembali konfigurasi squid.conf dengan mengetikkan nano /etc/squid/squid.conf. Ubah file konfigurasi squid menjadi seperti berikut ini.
+
+    http_port 8080
+    visible_hostname mojokerto
+
+    acl BLACKLISTS dstdomain "/etc/squid/restrict-sites.acl"
+    http_access deny BLACKLISTS
+    http_access allow all
+    
+<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/squidconf.PNG">
+
+Restart squid **service squid restart** dan jalankan alamat URL monta.if.its.ac.id
+
+<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/errorpage.PNG" >
+
+
 ## Nomor 12 : Menggunakan proxy cukup dengan mengetikkan domain janganlupa-ta.yyy.pw dan memasukkan port 8080.
+
+Buka MALANG dan update package lists dengan menjalankan command:
+
+    apt-get update
+
+Setelah melakukan update silahkan install aplikasi bind9 pada MALANG dengan perintah:
+
+    apt-get install bind9 -y
+
+Lakukan perintah pada MALANG. Isikan seperti berikut:
+
+    nano /etc/bind/named.conf.local
+
+Isikan konfigurasi domain janganlupa-ta.c12.pw sesuai dengan syntax berikut:
+
+    zone "janganlupa-ta.c12.pw" {
+ 	type master;
+	file "/etc/bind/jarkom/janganlupa-ta.c12.pw";
+    };
+
+<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/12a.PNG" >
+
+Buat folder jarkom di dalam /etc/bind
+
+    mkdir /etc/bind/jarkom
+
+Copykan file db.local pada path /etc/bind ke dalam folder jarkom yang baru saja dibuat dan ubah namanya menjadi janganlupa-ta.d11.pw
+
+    cp /etc/bind/db.local /etc/bind/jarkom/janganlupa-ta.d11.pw
+
+Kemudian buka file janganlupa-ta.d11.pw dan edit seperti gambar berikut dengan IP MOJOKERTO masing-masing kelompok:
+
+    nano /etc/bind/jarkom/janganlupa-ta.d11.pw
+    
+<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/12b.PNG" >
+
+Restart bind9 dengan perintah
+
+    service bind9 restart
+
+Ganti proxy pada web browser atau OS yang sebelumnya 10.151.79.99 menjadi janganlupa-ta.d11.pw, dengan port yaitu 8080.
+
+<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/12c.PNG" >
+
+Lalu coba periksa proxy yang telah diubah tersebut, contohnya dengan mengakses website apapun, seperti monta.if.its.ac.id
+
+<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/monta.PNG" >
+
+
