@@ -102,7 +102,7 @@ Setelah itu buat user dengan nama userta_c12 dan password pada MOJOKERTO dengan 
 
 Edit konfigurasi squid menjadi:
 
-<img src=https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/7a.PNG"
+<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/7a.PNG"
 
 Restart squid service squid restart, dan berikutnya ubah proxy pada web browser ataupun OS
 
