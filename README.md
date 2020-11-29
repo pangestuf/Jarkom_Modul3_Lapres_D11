@@ -162,7 +162,7 @@ Buka kembali file squid.conf dengan mengetikkan
 
     http_port 8080
     http_access allow USERS DUA
-    http_access allow USERS TGIA
+    http_access allow USERS TIGA
     http_access deny all
     visible_hostname mojokerto
 
