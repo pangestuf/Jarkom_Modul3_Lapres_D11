@@ -102,17 +102,17 @@ Setelah itu buat user dengan nama userta_c12 dan password pada MOJOKERTO dengan 
 
 Edit konfigurasi squid menjadi:
 
-<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/7a.PNG"
+<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/7a.PNG" >
 
 Restart squid service squid restart, dan berikutnya ubah proxy pada web browser ataupun OS
 
-<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/proxyip.PNG"
+<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/proxyip.PNG" >
 
 Selanjutnya dapat mencoba untuk mengakses situs tertentu seperti monta.if.its.ac.id
 
-<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/7b.PNG"
+<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/7b.PNG" >
 
-<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/7c.PNG"
+<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/7c.PNG" >
 
 ## Nomor 8 : Setiap hari Selasa-Rabu pukul 13.00-18.00. Bu Meguri membatasi penggunaan internet Anri hanya pada jadwal yang telah ditentukan itu saja. Maka diluar jam tersebut, Anri tidak dapat mengakses jaringan internet dengan proxy tersebut.
 
@@ -124,7 +124,7 @@ dan tambahkan
 
     acl SATU time TW 13:00-18:00
     
-<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/aclconf.PNG"
+<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/aclconf.PNG" >
 
 Buka kembali file squid.conf dengan mengetikkan
 
@@ -138,10 +138,37 @@ Buka kembali file squid.conf dengan mengetikkan
 
 Simpan file tersebut. Kemudian **service squid restart** . Lalu conba akses situs apapun, contoh monta.if.its.ac.id, jika sesuai dengan jam yang ditentukan, maka situs monta.if.its.ac.id akan terbuka, jika tidak sesuai dengan jam yang telah ditentukan, maka situs tersebut tidak dapat diakses.
 
-<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/bukti8.PNG"
+<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/bukti8.PNG" >
 
 
 ## Nomor 9 : Jadwal bimbingan dengan Bu Meguri adalah setiap hari Selasa-Kamis pukul 21.00 - 09.00 keesokan harinya (sampai Jumat jam 09.00).
+
+Sama halnya dengan nomor 8. Pada UML MOJOKERTO buat file konfigurasi dengan mengetikkan
+
+    nano /etc/squid/acl.conf
+
+dan tambahkan
+
+    acl DUA time TWH 21:00-23:59
+    acl TIGA time WHF 00:00-09:00
+
+<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/aclconf.PNG" >
+
+Buka kembali file squid.conf dengan mengetikkan
+
+    include /etc/squid/acl.conf
+
+    http_port 8080
+    http_access allow USERS DUA
+    http_access allow USERS TGIA
+    http_access deny all
+    visible_hostname mojokerto
+
+Simpan file tersebut. Kemudian **service squid restart**. Lalu coba akses situs apapun, contoh monta.if.its.ac.id, jika sesuai dengan jam yang ditentukan, maka situs monta.if.its.ac.id akan terbuka, jika tidak sesuai dengan jam yang telah ditentukan, maka situs tersebut tidak dapat diakses.
+
+<img src="https://github.com/pangestuf/Jarkom_Modul3_Lapres_D11/blob/main/Foto/bukti9.PNG" >
+
 ## Nomor 10 : Setiap mengakses google.com, maka akan di redirect menuju monta.if.its.ac.id.
+
 ## Nomor 11 : Mengubah error page default squid 
 ## Nomor 12 : Menggunakan proxy cukup dengan mengetikkan domain janganlupa-ta.yyy.pw dan memasukkan port 8080.
